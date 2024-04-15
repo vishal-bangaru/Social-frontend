@@ -20,6 +20,34 @@ const Share = () => {
       console.log(err);
     }
   };
+  
+
+
+  const uploadFile = async (file, name) => {
+    try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('user', name);
+
+        const response = await fetch('https://localhost:7015/students/PostImg', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            console.log('File uploaded successfully.');
+            // Handle success
+        } else {
+            console.error('Failed to upload file.');
+            // Handle failure
+        }
+    } catch (error) {
+        console.error('Error uploading file:', error);
+        // Handle error
+    }
+};
+
+
 
   const { currentUser } = useContext(AuthContext);
 
@@ -36,12 +64,13 @@ const Share = () => {
       },
     }
   );
-
+ 
   const handleClick = async (e) => {
     e.preventDefault();
     let imgUrl = "";
-    if (file) imgUrl = await upload();
-    mutation.mutate({ desc, img: imgUrl });
+    console.log(currentUser.name)
+    if (file) await uploadFile(file,currentUser.name);
+    //mutation.mutate({ desc, img: imgUrl });
     setDesc("");
     setFile(null);
   };

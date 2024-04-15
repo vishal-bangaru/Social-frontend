@@ -38,7 +38,7 @@ const Register = () => {
 
     try {
       let data={...inputs,id:v4()};
-      console.log(data)
+     
       await axios.post("https://localhost:7015/students/InsertStudent", data);
       navigate("/login");
     } catch (err) {

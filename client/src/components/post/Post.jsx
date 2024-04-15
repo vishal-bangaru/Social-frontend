@@ -13,92 +13,98 @@ import { makeRequest } from "../../axios";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 
-const Post = ({ post }) => {
+const Post = ({ post,user }) => {
   const [commentOpen, setCommentOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const { currentUser } = useContext(AuthContext);
 
-  const { isLoading, error, data } = useQuery(["likes", post.id], () =>
-    makeRequest.get("/likes?postId=" + post.id).then((res) => {
-      return res.data;
-    })
-  );
+  // const { isLoading, error, data } = useQuery(["likes", post.id], () =>
+  //   makeRequest.get("/likes?postId=" + post.id).then((res) => {
+  //     return res.data;
+  //   })
+  // );
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
-  const mutation = useMutation(
-    (liked) => {
-      if (liked) return makeRequest.delete("/likes?postId=" + post.id);
-      return makeRequest.post("/likes", { postId: post.id });
-    },
-    {
-      onSuccess: () => {
-        // Invalidate and refetch
-        queryClient.invalidateQueries(["likes"]);
-      },
-    }
-  );
-  const deleteMutation = useMutation(
-    (postId) => {
-      return makeRequest.delete("/posts/" + postId);
-    },
-    {
-      onSuccess: () => {
-        // Invalidate and refetch
-        queryClient.invalidateQueries(["posts"]);
-      },
-    }
-  );
+  // const mutation = useMutation(
+  //   (liked) => {
+  //     if (liked) return makeRequest.delete("/likes?postId=" + post.id);
+  //     return makeRequest.post("/likes", { postId: post.id });
+  //   },
+  //   {
+  //     onSuccess: () => {
+  //       // Invalidate and refetch
+  //       queryClient.invalidateQueries(["likes"]);
+  //     },
+  //   }
+  // );
+  // const deleteMutation = useMutation(
+  //   (postId) => {
+  //     return makeRequest.delete("/posts/" + postId);
+  //   },
+  //   {
+  //     onSuccess: () => {
+  //       // Invalidate and refetch
+  //       queryClient.invalidateQueries(["posts"]);
+  //     },
+  //   }
+  // );
 
-  const handleLike = () => {
-    mutation.mutate(data.includes(currentUser.id));
-  };
+  // const handleLike = () => {
+  //   mutation.mutate(data.includes(currentUser.id));
+  // };
 
-  const handleDelete = () => {
-    deleteMutation.mutate(post.id);
-  };
+  // const handleDelete = () => {
+  //   deleteMutation.mutate(post.id);
+  // };
 
   return (
     <div className="post">
       <div className="container">
         <div className="user">
           <div className="userInfo">
-            <img src={"/upload/"+post.profilePic} alt="" />
+            <img src="/" alt="aaa" />
             <div className="details">
               <Link
-                to={`/profile/${post.userId}`}
+                to={`/profile/1`}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <span className="name">{post.name}</span>
+                <span className="name">{user.name}</span>
               </Link>
               <span className="date">{moment(post.createdAt).fromNow()}</span>
             </div>
           </div>
           <MoreHorizIcon onClick={() => setMenuOpen(!menuOpen)} />
           {menuOpen && post.userId === currentUser.id && (
-            <button onClick={handleDelete}>delete</button>
+            <button >delete</button>
           )}
         </div>
         <div className="content">
           <p>{post.desc}</p>
-          <img src={post.img} alt="" />
+          <img src={post.post} alt="" />
         </div>
         <div className="info">
           <div className="item">
-            {isLoading ? (
-              "loading"
-            ) : data.includes(currentUser.id) ? (
-              <FavoriteOutlinedIcon
-                style={{ color: "red" }}
-                onClick={handleLike}
-              />
-            ) : (
-              <FavoriteBorderOutlinedIcon onClick={handleLike} />
-            )}
-            {data?.length} Likes
+            {
+            //isLoading ? (
+            //   "loading"
+            // ) : data.includes(currentUser.id) ? (
+            //   <FavoriteOutlinedIcon
+            //     style={{ color: "red" }}
+               
+            //   />
+            // ) :
+            //  (
+
+              <FavoriteBorderOutlinedIcon  />
+            // )
+            
+            }
+            {/* {data?.length}  */}
+            Likes
           </div>
-          <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
+          <div className="item" >
             <TextsmsOutlinedIcon />
             See Comments
           </div>
