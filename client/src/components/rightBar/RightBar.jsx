@@ -1,38 +1,48 @@
+import { useEffect, useState } from "react";
 import "./rightBar.scss";
+import axios from "axios";
 
 const RightBar = () => {
+  // https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600
+  const [users,setUsers]=useState([])
+  
+  useEffect(()=>{
+       axios.get("https://localhost:7015/students/GetAllStudents")
+       .then(res=>{setUsers(res.data)})
+       .catch(err=>console.log(err));
+
+  },[])
   return (
     <div className="rightBar">
       <div className="container">
         <div className="item">
           <span>Suggestions For You</span>
-          <div className="user">
+          {
+            users.map((user)=>(
+              <div className="user">
             <div className="userInfo">
               <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg"
                 alt=""
               />
-              <span>Suhasini Varma</span>
+              <span>{user.name}</span>
             </div>
             <div className="buttons">
               <button>follow</button>
               <button>dismiss</button>
             </div>
           </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-              <span>Jaya Vardhini</span>
-            </div>
-            <div className="buttons">
-              <button>follow</button>
-              <button>dismiss</button>
-            </div>
-          </div>
+            ))
+          }
+          
+
+
+
+
+
+
         </div>
+
         <div className="item">
           <span>Latest Activities</span>
           <div className="user">

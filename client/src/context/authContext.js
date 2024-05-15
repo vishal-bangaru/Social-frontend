@@ -9,7 +9,9 @@ JSON.parse(localStorage.getItem("user")) || null
   );
 
   const login = async (inputs) => {
-     await axios.post(`https://localhost:7015/students/Login`, inputs);
+     const res=await axios.post(`https://localhost:7015/students/Login`, inputs);
+     
+      localStorage.setItem('user_id',res.data)
     setCurrentUser(inputs)
   
   };

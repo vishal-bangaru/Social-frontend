@@ -6,24 +6,22 @@ import {v4} from "uuid"
 const Register = () => {
   let navigate=useNavigate();
   const [inputs, setInputs] = useState({
-    id: "",
+    id: "string",
+    type:"string",
+    user_id: "string",
     name: "string",
     email: "string",
     password: "string",
-     posts: [
-      {
-        id: "string",
-        title: "string",
-        post: "string",
-        content: "string",
-        created: "string",
-        likes: 0
-      }
-    ],
     followers: [
       "string"
     ],
     following: [
+      "string"
+    ],
+    requests:[
+      "string"
+    ],
+    approvals:[
       "string"
     ]
   });
@@ -43,11 +41,10 @@ const Register = () => {
       navigate("/login");
     } catch (err) {
 
-      setErr(err.response.data);
+      setErr("Username Already Exists");
     }
   };
 
-  console.log(err)
 
   return (
     <div className="register">
@@ -55,9 +52,7 @@ const Register = () => {
         <div className="left">
           <h1>Social Blade</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero cum,
-            alias totam numquam ipsa exercitationem dignissimos, error nam,
-            consequatur.
+          
           </p>
           <span>Do you have an account?</span>
           <Link to="/login">
@@ -66,27 +61,30 @@ const Register = () => {
         </div>
         <div className="right">
           <h1>Register</h1>
+          {err && <p style={{color: 'red'}}>{err}</p>}
           <form>
             <input
               type="text"
               placeholder="Username"
               name="name"
               onChange={handleChange}
+              required
             />
             <input
               type="email"
               placeholder="Email"
               name="email"
               onChange={handleChange}
+              required
             />
             <input
               type="password"
               placeholder="Password"
               name="password"
               onChange={handleChange}
+              required
             />
             
-            {err && err}
             <button onClick={handleClick}>Register</button>
           </form>
         </div>

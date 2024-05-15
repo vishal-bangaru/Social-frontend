@@ -14,18 +14,18 @@ import Courses from "../../assets/12.png";
 import Fund from "../../assets/13.png";
 import { AuthContext } from "../../context/authContext";
 import { useContext } from "react";
-
+import { useNavigate } from "react-router-dom";
 const LeftBar = () => {
 
   const { currentUser } = useContext(AuthContext);
-
+  const navigate=useNavigate()
   return (
     <div className="leftBar">
       <div className="container">
         <div className="menu">
-          <div className="user">
+          <div className="user" onClick={()=>{navigate("/profile/1")}}>
             <img
-              src={currentUser.profilePic}
+              src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg"
               alt=""
             />
             <span>{currentUser.name}</span>

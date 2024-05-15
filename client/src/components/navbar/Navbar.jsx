@@ -7,7 +7,7 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { AuthContext } from "../../context/authContext";
@@ -15,12 +15,16 @@ import { AuthContext } from "../../context/authContext";
 const Navbar = () => {
   const { toggle, darkMode } = useContext(DarkModeContext);
   const { currentUser } = useContext(AuthContext);
-
+  const navigate = useNavigate();
+  function handleLogout(){
+    localStorage.clear();
+    navigate('/login')
+  }
   return (
     <div className="navbar">
       <div className="left">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span>lamasocial</span>
+          <span>Social Blade</span>
         </Link>
         <HomeOutlinedIcon />
         {darkMode ? (
@@ -38,12 +42,13 @@ const Navbar = () => {
         {/* <PersonOutlinedIcon />
         <EmailOutlinedIcon /> */}
         <NotificationsOutlinedIcon />
-        <div className="user">
+        <div className="user" >
           <img
-            src={"/upload/" + currentUser.profilePic}
+            src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg"
             alt=""
           />
           <span>{currentUser.name}</span>
+          <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
         </div>
       </div>
     </div>

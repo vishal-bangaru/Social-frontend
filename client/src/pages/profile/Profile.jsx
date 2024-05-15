@@ -59,13 +59,11 @@ const Profile = () => {
 
   return (
     <div className="profile">
-      {isLoading ? (
-        "loading"
-      ) : (
+      
         <>
           <div className="images">
-            <img src={"/upload/"+data.coverPic} alt="" className="cover" />
-            <img src={"/upload/"+data.profilePic} alt="" className="profilePic" />
+            <img src="https://img.freepik.com/free-vector/digital-technology-background-with-abstract-wave-border_53876-117508.jpg" alt="" className="cover" />
+            <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="" className="profilePic" />
           </div>
           <div className="profileContainer">
             <div className="uInfo">
@@ -87,28 +85,26 @@ const Profile = () => {
                 </a>
               </div>
               <div className="center">
-                <span>{data.name}</span>
+                <span>Sahil</span>
                 <div className="info">
                   <div className="item">
                     <PlaceIcon />
-                    <span>{data.city}</span>
+                    <span>city</span> 
                   </div>
                   <div className="item">
                     <LanguageIcon />
-                    <span>{data.website}</span>
+                    <span>website</span>
                   </div>
                 </div>
-                {rIsLoading ? (
-                  "loading"
-                ) : userId === currentUser.id ? (
+               
                   <button onClick={() => setOpenUpdate(true)}>update</button>
-                ) : (
-                  <button onClick={handleFollow}>
+               
+                  {/* <button onClick={handleFollow}>
                     {relationshipData.includes(currentUser.id)
                       ? "Following"
                       : "Follow"}
                   </button>
-                )}
+                */}
               </div>
               <div className="right">
                 <EmailOutlinedIcon />
@@ -118,7 +114,7 @@ const Profile = () => {
             <Posts userId={userId} />
           </div>
         </>
-      )}
+      
       {openUpdate && <Update setOpenUpdate={setOpenUpdate} user={data} />}
     </div>
   );

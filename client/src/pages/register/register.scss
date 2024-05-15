@@ -27,14 +27,16 @@
       color: white;
 
       h1 {
+        
         font-size: 100px;
         line-height: 100px;
+        margin-bottom: 20px;
       }
       
-      p {
-      }
+      
 
       span {
+        
         font-size: 14px;
       }
       
@@ -46,6 +48,7 @@
         color: rebeccapurple;
         font-weight: bold;
         cursor: pointer;
+        border-radius: 50px;
       }
     }
 
@@ -80,6 +83,7 @@
           color: white;
           font-weight: bold;
           cursor: pointer;
+          border-radius: 50px;
         }
       }
     }

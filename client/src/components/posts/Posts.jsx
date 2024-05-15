@@ -13,7 +13,7 @@ const Posts = ({userId}) => {
  // );
  const [data,setData]=useState([])
  const fun=async()=>{
-  let res=await axios.get("https://localhost:7015/students/GetAllStudents")
+  let res=await axios.get("https://localhost:7015/students/GetPostsById?userId=eefbd8c4-215b-447f-b419-4fbb447ecdae")
   setData(res.data);
  }
  useEffect(()=>{
@@ -24,10 +24,10 @@ const Posts = ({userId}) => {
   return (
     <div className="posts">
     {
-  data?.map((user) => (
-    user.posts.map((post) => (
-      <Post post={post} key={user.id} user={user}/>
-    ))
+  data?.map((post) => (
+   
+      <Post post={post} key={post.id} />
+
   ))
 }
     </div>

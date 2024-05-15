@@ -10,25 +10,18 @@ const Share = () => {
   const [file, setFile] = useState(null);
   const [desc, setDesc] = useState("");
 
-  const upload = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await makeRequest.post("/upload", formData);
-      return res.data;
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  
   
 
 
-  const uploadFile = async (file, name) => {
+  const uploadFile = async (file, id,desc) => {
     try {
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('user', name);
-
+        formData.append('user_id', id);
+        formData.append('content',desc);
+      
+        
         const response = await fetch('https://localhost:7015/students/PostImg', {
             method: 'POST',
             body: formData
@@ -51,25 +44,14 @@ const Share = () => {
 
   const { currentUser } = useContext(AuthContext);
 
-  const queryClient = useQueryClient();
 
-  const mutation = useMutation(
-    (newPost) => {
-      return makeRequest.post("/posts", newPost);
-    },
-    {
-      onSuccess: () => {
-        // Invalidate and refetch
-        queryClient.invalidateQueries(["posts"]);
-      },
-    }
-  );
+ 
  
   const handleClick = async (e) => {
     e.preventDefault();
-    let imgUrl = "";
+    
     console.log(currentUser.name)
-    if (file) await uploadFile(file,currentUser.name);
+    if (file) await uploadFile(file,localStorage.getItem('user_id'),desc);
     //mutation.mutate({ desc, img: imgUrl });
     setDesc("");
     setFile(null);
@@ -80,7 +62,7 @@ const Share = () => {
       <div className="container">
         <div className="top">
           <div className="left">
-            <img src={"/upload/" + currentUser.profilePic} alt="" />
+            <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="" />
             <input
               type="text"
               placeholder={`What's on your mind ${currentUser.name}?`}

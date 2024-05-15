@@ -4,16 +4,17 @@ import { AuthContext } from "../../context/authContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../axios";
 import moment from "moment";
+import axios from 'axios'
 
-const Comments = ({ postId }) => {
+const Comments = ({ post }) => {
   const [desc, setDesc] = useState("");
   const { currentUser } = useContext(AuthContext);
 
-  const { isLoading, error, data } = useQuery(["comments"], () =>
-    makeRequest.get("/comments?postId=" + postId).then((res) => {
-      return res.data;
-    })
-  );
+  // const { isLoading, error, data } = useQuery(["comments"], () =>
+  //   makeRequest.get("/comments?postId=" + postId).then((res) => {
+  //     return res.data;
+  //   })
+  // );
 
   const queryClient = useQueryClient();
 
@@ -31,14 +32,18 @@ const Comments = ({ postId }) => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    mutation.mutate({ desc, postId });
+    await axios.post("https://localhost:7015/students/InsertComment",{
+    name:currentUser.name,
+    post_id:post.id,
+    desc:desc
+    })
     setDesc("");
   };
 
   return (
     <div className="comments">
       <div className="write">
-        <img src={"/upload/" + currentUser.profilePic} alt="" />
+        <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="" />
         <input
           type="text"
           placeholder="write a comment"
@@ -47,13 +52,9 @@ const Comments = ({ postId }) => {
         />
         <button onClick={handleClick}>Send</button>
       </div>
-      {error
-        ? "Something went wrong"
-        : isLoading
-        ? "loading"
-        : data.map((comment) => (
+      { post.comments.map((comment) => (
             <div className="comment">
-              <img src={"/upload/" + comment.profilePic} alt="" />
+              <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="" />
               <div className="info">
                 <span>{comment.name}</span>
                 <p>{comment.desc}</p>
