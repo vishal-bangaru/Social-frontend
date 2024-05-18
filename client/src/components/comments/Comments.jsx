@@ -16,19 +16,19 @@ const Comments = ({ post }) => {
   //   })
   // );
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
-  const mutation = useMutation(
-    (newComment) => {
-      return makeRequest.post("/comments", newComment);
-    },
-    {
-      onSuccess: () => {
-        // Invalidate and refetch
-        queryClient.invalidateQueries(["comments"]);
-      },
-    }
-  );
+  // const mutation = useMutation(
+  //   (newComment) => {
+  //     return makeRequest.post("/comments", newComment);
+  //   },
+  //   {
+  //     onSuccess: () => {
+  //       // Invalidate and refetch
+  //       queryClient.invalidateQueries(["comments"]);
+  //     },
+  //   }
+  // );
 
   const handleClick = async (e) => {
     e.preventDefault();

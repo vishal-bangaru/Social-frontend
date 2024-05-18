@@ -61,6 +61,31 @@ formData.append('user_id', localStorage.getItem("user_id"));
  await axios.post("https://localhost:7015/students/Likes",formData
   )
   };
+  const renderMedia = () => {
+    if (post && post.post) {
+      const fileExtension = post.post.split('.').pop().toLowerCase();
+      const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension);
+      const isVideo = ['mp4', 'webm', 'ogg'].includes(fileExtension);
+
+      if (isImage) {
+        return <img src={post.post} alt="Media content" 
+        />;
+      } else if (isVideo) {
+        return (
+          <video controls style={{width:"100%",
+            maxHeight:"500px",objectFit:"cover",
+            marginTop:"20px"
+          }}>
+            <source src={post.post} type={`video/${fileExtension}`} />
+            Your browser does not support the video tag.
+          </video>
+        );
+      } else {
+        return <p>Unsupported media type</p>;
+      }
+    }
+    return null;
+  };
 
   // const handleDelete = () => {
   //   deleteMutation.mutate(post.id);
@@ -79,7 +104,7 @@ formData.append('user_id', localStorage.getItem("user_id"));
                 to={`/profile/1`}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <span className="name">Sahil</span>
+                <span className="name">{post.owner}</span>
               </Link>
               <span className="date">{moment(post.created).fromNow()}</span>
             </div>
@@ -91,7 +116,8 @@ formData.append('user_id', localStorage.getItem("user_id"));
         </div>
         <div className="content">
           <p>{post.content}</p>
-          <img src={post.post} alt="" />
+
+          {renderMedia()}
         </div>
         <div className="info">
           <div className="item" onClick={handleLike} >

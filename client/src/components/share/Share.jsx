@@ -14,14 +14,15 @@ const Share = () => {
   
 
 
-  const uploadFile = async (file, id,desc) => {
+  const uploadFile = async (file, id,desc,name) => {
     try {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('user_id', id);
         formData.append('content',desc);
+        formData.append('owner',name);
       
-        
+        console.log(file)
         const response = await fetch('https://localhost:7015/students/PostImg', {
             method: 'POST',
             body: formData
@@ -51,7 +52,7 @@ const Share = () => {
     e.preventDefault();
     
     console.log(currentUser.name)
-    if (file) await uploadFile(file,localStorage.getItem('user_id'),desc);
+    if (file) await uploadFile(file,localStorage.getItem('user_id'),desc,currentUser.name);
     //mutation.mutate({ desc, img: imgUrl });
     setDesc("");
     setFile(null);
@@ -88,7 +89,7 @@ const Share = () => {
             <label htmlFor="file">
               <div className="item">
                 <img src={Image} alt="" />
-                <span>Add Image</span>
+                <span>Add Post</span>
               </div>
             </label>
             <div className="item">

@@ -11,51 +11,42 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Posts from "../../components/posts/Posts";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { makeRequest } from "../../axios";
-import { useLocation } from "react-router-dom";
-import { useContext } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/authContext";
 import Update from "../../components/update/Update";
 import { useState } from "react";
-
+import axios from "axios";
+import Navbar from "../../components/navbar/Navbar";
 const Profile = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const { currentUser } = useContext(AuthContext);
+  const [user,setUser]=useState({})
+  //const [currentUser,setCurrentUser]=useState({});
+  const {id}=useParams();
+  console.log(id)
+  useEffect(()=>{
+    axios.get(`https://localhost:7015/students/GetStudentById?id=${id}`)
+    .then(res=>setUser(res.data))
+    .catch(err=>console.log(err))
 
-  const userId = parseInt(useLocation().pathname.split("/")[2]);
+  },[id])
+  const cur_id=localStorage.getItem("user_id")
+  // useEffect(()=>{
+  //   axios.get(`https://localhost:7015/students/GetStudentById?id=${cur_id}`)
+  //   .then(res=>setCurrentUser(res.data))
+  //   .catch(err=>console.log(err))
 
-  const { isLoading, error, data } = useQuery(["user"], () =>
-    makeRequest.get("/users/find/" + userId).then((res) => {
-      return res.data;
-    })
-  );
-
-  const { isLoading: rIsLoading, data: relationshipData } = useQuery(
-    ["relationship"],
-    () =>
-      makeRequest.get("/relationships?followedUserId=" + userId).then((res) => {
-        return res.data;
-      })
-  );
-
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation(
-    (following) => {
-      if (following)
-        return makeRequest.delete("/relationships?userId=" + userId);
-      return makeRequest.post("/relationships", { userId });
-    },
-    {
-      onSuccess: () => {
-        // Invalidate and refetch
-        queryClient.invalidateQueries(["relationship"]);
-      },
-    }
-  );
-
-  const handleFollow = () => {
-    mutation.mutate(relationshipData.includes(currentUser.id));
-  };
+  // },[])
+  const handleFollow=(req_id)=>{
+      
+    axios.post(`https://localhost:7015/students/Request?cur_id=${cur_id}&req_id=${req_id}`)
+    .then(res=>
+      console.log(res.data)
+    )
+    .catch(err=>console.log(err))
+}
+  
 
   return (
     <div className="profile">
@@ -68,36 +59,45 @@ const Profile = () => {
           <div className="profileContainer">
             <div className="uInfo">
               <div className="left">
-                <a href="http://facebook.com">
-                  <FacebookTwoToneIcon fontSize="large" />
-                </a>
+                
                 <a href="http://facebook.com">
                   <InstagramIcon fontSize="large" />
                 </a>
-                <a href="http://facebook.com">
-                  <TwitterIcon fontSize="large" />
-                </a>
+                
                 <a href="http://facebook.com">
                   <LinkedInIcon fontSize="large" />
                 </a>
-                <a href="http://facebook.com">
-                  <PinterestIcon fontSize="large" />
-                </a>
+                
               </div>
               <div className="center">
-                <span>Sahil</span>
+                <span>{user.name}</span>
                 <div className="info">
                   <div className="item">
                     <PlaceIcon />
-                    <span>city</span> 
+                    <span>Hyderabad,Telangana</span> 
                   </div>
-                  <div className="item">
+                  {/* <div className="item">
                     <LanguageIcon />
-                    <span>website</span>
-                  </div>
+                    <span></span>
+                  </div> */}
                 </div>
-               
+               {
+                 currentUser.user_id===id ?
                   <button onClick={() => setOpenUpdate(true)}>update</button>
+                  :
+                  currentUser.requests?.includes(id)
+                  ?
+                  <button >Requested</button>
+                  :
+                  currentUser.following?.includes(id)
+                  ?
+                  <button >Message</button>
+                  :
+                  user.approvals?.includes(cur_id) ? 
+                <button>Requested</button>
+                :
+                <button onClick={()=>{handleFollow(user.id)}}>follow</button>
+               }
                
                   {/* <button onClick={handleFollow}>
                     {relationshipData.includes(currentUser.id)
@@ -110,12 +110,14 @@ const Profile = () => {
                 <EmailOutlinedIcon />
                 <MoreVertIcon />
               </div>
+              
             </div>
-            <Posts userId={userId} />
+            <p style={{textAlign:"center",color:"grey",fontWeight:"bold",margin:"10px"}}>Posts</p>
+            <Posts id={id}/>
           </div>
         </>
       
-      {openUpdate && <Update setOpenUpdate={setOpenUpdate} user={data} />}
+      {/* {openUpdate && <Update setOpenUpdate={setOpenUpdate} user={data} />} */}
     </div>
   );
 };

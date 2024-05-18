@@ -1,0 +1,71 @@
+@import "../../style.scss";
+.friends-container {
+    
+    @include themify($themes) {
+      padding: 20px 70px;
+      background-color: rgb(230, 225, 225);
+      
+  
+      @include mobile {
+        padding: 10px;
+      }
+  
+      @include tablet{
+        padding: 20px;
+      }
+    }   
+    
+  
+  
+  .friends-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 50px; 
+    
+  }
+  
+  .friends-table th, .friends-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    color: black;
+  }
+  
+  .friends-table th {
+    background-color: #f2f2f2;
+    color: black;
+  }
+  
+  .friends-table td p {
+    margin: 5px 0;
+  }
+  .header
+  {
+    
+    color: black;
+    display: flex;
+    justify-content: space-evenly;
+    
+    
+    button{
+      background-color: #f2f2f2;
+      padding: 10px;
+      border-radius: 5px;
+     
+    }
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      img {
+        width: 30px;
+      }
+
+      span {
+        font-size: 14px;
+      }
+    }
+  }
+
+}
