@@ -1,2 +1,2 @@
-#Front end for a Social Networking App
+# Front end for a Social Networking App
 
